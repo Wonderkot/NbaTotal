@@ -15,7 +15,34 @@
             </TabItem.Header>
             <TabItem.Content>
                 <StackPanel>
-                    
+                    <Grid Height="384">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="21*"/>
+                            <RowDefinition Height="17*"/>
+                            <RowDefinition Height="90*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0" Grid.Row="0" Name="Team1Cb"/>
+                        <ComboBox Grid.Column="1" Grid.Row="0" Name="Team2Cb"/>
+                        <Button Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Рассчет" Name="CalcBtn" Click="CalcBtn_OnClick"/>
+                        
+                        <Grid Grid.Column="0" Grid.Row="2" Name="Summary">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30*"/>
+                                <RowDefinition Height="106*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions >
+                                <ColumnDefinition />
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Name="Team1Summary" Grid.Column="0" Grid.Row="0"/>
+                            <TextBlock Name="Team2Summary" Grid.Column="1" Grid.Row="0"/>
+                        </Grid>
+                        <TextBlock Grid.Column="1" Grid.Row="2" Name="Result"/>
+                    </Grid>
                 </StackPanel>
             </TabItem.Content>
         </TabItem>

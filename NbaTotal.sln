@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NbaTotal", "NbaTotal\NbaTotal.csproj", "{835B5821-6274-4F23-822F-23C1AE2609EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalcLib", "CalcLib\CalcLib.csproj", "{57557F1B-3457-4679-AAF6-FC64761B9677}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{835B5821-6274-4F23-822F-23C1AE2609EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{835B5821-6274-4F23-822F-23C1AE2609EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{835B5821-6274-4F23-822F-23C1AE2609EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57557F1B-3457-4679-AAF6-FC64761B9677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57557F1B-3457-4679-AAF6-FC64761B9677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57557F1B-3457-4679-AAF6-FC64761B9677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57557F1B-3457-4679-AAF6-FC64761B9677}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
