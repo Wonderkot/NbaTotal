@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using CalcLib.BusinessLogic.Interfaces;
 using CalcLib.Data;
 using Newtonsoft.Json.Linq;
@@ -15,35 +13,35 @@ namespace CalcLib.BusinessLogic.Implementation
     public class DataProvider : IDataProvider
     {
         private readonly Settings _settings;
-        private static readonly HttpClient Client = new HttpClient();
         public DataProvider()
         {
             ISettingsReader settingsReader = new SettingsReader();
             _settings = settingsReader.GetSettings();
         }
-        public async Task<List<Team>> GetAllTeams()
+        public List<Team> GetAllTeams()
         {
-            if (_settings.AllTeamUrl == null)
+            if (_settings?.AllTeamUrl == null)
                 return new List<Team>();
 
             var url = _settings.AllTeamUrl;
-            Client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; AcmeInc/1.0");
-
-            ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            //var request = (HttpWebRequest)WebRequest.Create(url);
-
-            //var response = (HttpWebResponse)request.GetResponse();
-
-            //var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            var responsetext = GetResponseText(url);
 
             try
             {
-                var responseString = await Client.GetStringAsync(url);
+                var json = JObject.Parse(responsetext);
+                var resultSets = json["resultSets"];
+                var rowSet = resultSets[0]["rowSet"] as JArray;
+                var teams = new List<Team>();
+                if (rowSet != null)
+                {
+                    foreach (var item in rowSet)
+                    {
+                        long id = (long) item[1];
+                        Team team = GetTeam(id);
 
-                var json = JObject.Parse(responseString);
-
-                var token = json["resultSets"]["0"]["rowSet"];
+                    }
+                    return teams;
+                }
             }
             catch (Exception e)
             {
@@ -51,18 +49,51 @@ namespace CalcLib.BusinessLogic.Implementation
                 throw;
             }
 
-
             return new List<Team>();
         }
 
-        private bool AcceptAllCertifications(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
+        private string GetResponseText(string url)
         {
-            return true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
+            request.Accept = "application/json";
+            request.Method = "GET";
+            request.Headers.Add("Accept-Encoding", ": gzip, deflate, br");
+            string responseText;
+            try
+            {
+                var response = request.GetResponse() as HttpWebResponse;
+                using (var responsechar = new StreamReader(response.GetResponseStream()))
+                {
+                    responseText = responsechar.ReadToEnd();
+                    Debug.Write(responseText);
+                }
+
+                response.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            return responseText;
         }
 
         public Team GetTeam(long id)
         {
-            return null;
+            if (_settings?.TeamUrl == null)
+                return null;
+            try
+            {
+                var url = string.Format(_settings.TeamUrl, id);
+                var response = GetResponseText(url);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            return new Team();
         }
     }
 }

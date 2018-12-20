@@ -6,7 +6,7 @@ namespace CalcLib.BusinessLogic.Interfaces
 {
     public interface IDataProvider
     {
-        Task<List<Team>> GetAllTeams();
+        List<Team> GetAllTeams();
         Team GetTeam(long id);
     }
 }

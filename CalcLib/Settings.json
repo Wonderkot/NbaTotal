@@ -1,3 +1,5 @@
 {
-  "allTeamUrl": "https://stats.nba.com/stats/commonteamyears/?LeagueID=00"
+  "allTeamUrl": "https://stats.nba.com/stats/commonteamyears/?LeagueID=00",
+  "teamUrl": "https://stats.nba.com/stats/teamdashboardbygeneralsplits?DateFrom=&DateTo=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlusMinus=N&Rank=N&Season=2018-19&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&Split=general&TeamID={0}&VsConference=&VsDivision="
+
 }

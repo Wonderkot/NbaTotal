@@ -10,5 +10,6 @@ namespace CalcLib.Data
         public long Id { get; set; }
         public double Pts { get; set; }
         public double PlusMinus { get; set; }
+        public string Abbreviation { get; set; }
     }
 }
