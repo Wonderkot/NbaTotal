@@ -18,6 +18,10 @@ namespace CalcLib.BusinessLogic.Implementation
             var ratio = (100 - sumPlusMinus) / 100;
             var result = Math.Round(ratio * sumPts);
             string totalOverUnder = ratio < 1 ? "ТБ" : "ТМ";
+            if (team1.PlusMinus < 0 || team2.PlusMinus < 0)
+            {
+                totalOverUnder = "ТБ <-> ТМ";
+            }
             var correction = Math.Abs(team1.PlusMinus) > Math.Abs(team2.PlusMinus) ? team1.PlusMinus : team2.PlusMinus;
             correction = Math.Round(correction);
 
