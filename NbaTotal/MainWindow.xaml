@@ -10,16 +10,16 @@
         <TabItem x:Name="CalcTab">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="3">Рассчет</TextBlock>
+                    <TextBlock Margin="3">Расчет</TextBlock>
                 </StackPanel>
             </TabItem.Header>
             <TabItem.Content>
                 <StackPanel>
                     <Grid Height="384">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="21*"/>
-                            <RowDefinition Height="17*"/>
-                            <RowDefinition Height="90*"/>
+                            <RowDefinition Height="5*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="85*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>

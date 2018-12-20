@@ -18,10 +18,10 @@ namespace CalcLib.BusinessLogic.Implementation
             ISettingsReader settingsReader = new SettingsReader();
             _settings = settingsReader.GetSettings();
         }
-        public List<Team> GetAllTeams()
+        public Dictionary<long, string> GetAllTeams()
         {
             if (_settings?.AllTeamUrl == null)
-                return new List<Team>();
+                return new Dictionary<long, string>();
 
             var url = _settings.AllTeamUrl;
             var responsetext = GetResponseText(url);
@@ -31,14 +31,17 @@ namespace CalcLib.BusinessLogic.Implementation
                 var json = JObject.Parse(responsetext);
                 var resultSets = json["resultSets"];
                 var rowSet = resultSets[0]["rowSet"] as JArray;
-                var teams = new List<Team>();
+                var teams = new Dictionary<long, string>();
                 if (rowSet != null)
                 {
                     foreach (var item in rowSet)
                     {
-                        long id = (long) item[1];
-                        Team team = GetTeam(id);
-
+                        var value = item[4].ToString();
+                        if (!string.IsNullOrEmpty(value))
+                        {
+                            long id = (long)item[1];
+                            teams.Add(id, value);
+                        }
                     }
                     return teams;
                 }
@@ -49,16 +52,19 @@ namespace CalcLib.BusinessLogic.Implementation
                 throw;
             }
 
-            return new List<Team>();
+            return new Dictionary<long, string>();
         }
 
         private string GetResponseText(string url)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Accept = "application/json";
             request.Method = "GET";
             request.Headers.Add("Accept-Encoding", ": gzip, deflate, br");
+            //request.KeepAlive = true;
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0";
+            request.Referer = "http://stats.nba.com/scores/";
+
             string responseText;
             try
             {
@@ -87,11 +93,26 @@ namespace CalcLib.BusinessLogic.Implementation
             {
                 var url = string.Format(_settings.TeamUrl, id);
                 var response = GetResponseText(url);
+                var json = JObject.Parse(response);
+                var resultSets = json["resultSets"];
+                var rowSet = resultSets[0]["rowSet"] as JArray;
+                if (rowSet != null)
+                {
+                    var pts = rowSet[0][27].Value<double>();
+                    var plusMinus = rowSet[0][28].Value<double>();
+                    var team = new Team
+                    {
+                        Id = id,
+                        PlusMinus = plusMinus,
+                        Pts = pts
+                    };
+                    return team;
+                }
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw;
             }
             return new Team();
         }

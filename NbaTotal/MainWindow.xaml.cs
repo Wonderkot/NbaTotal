@@ -14,25 +14,31 @@ namespace NbaTotal
     public partial class MainWindow : Window
     {
         readonly IDataProvider _dataProvider = new DataProvider();
+        readonly  ICalc _calc = new Calc();
         public MainWindow()
         {
             InitializeComponent();
-            List<Team> teams = _dataProvider.GetAllTeams();
+            Dictionary<long, string> teams = _dataProvider.GetAllTeams();
             SetData(Team1Cb, teams);
             SetData(Team2Cb, teams);
         }
 
         private void CalcBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            Team1Summary.Text = "Team1";
-            Team2Summary.Text = "Team2";
+            long id1 = (long) Team1Cb.SelectedValue;
+            long id2 = (long) Team2Cb.SelectedValue;
+
+            var x = _calc.GetResult(id1, id2);
+            Result.Text = x.ToString();
+            Team1Summary.Text = Team1Cb.Text;
+            Team2Summary.Text = Team2Cb.Text;
         }
 
-        private void SetData(ComboBox comboBox, List<Team> teams)
+        private void SetData(ComboBox comboBox, Dictionary<long, string> teams)
         {
             comboBox.ItemsSource = teams;
-            comboBox.DisplayMemberPath = "Abbreviation";
-            comboBox.SelectedValuePath = "Id";
+            comboBox.DisplayMemberPath = "Value";
+            comboBox.SelectedValuePath = "Key";
         }
     }
 }
