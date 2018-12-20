@@ -18,6 +18,8 @@ namespace CalcLib.BusinessLogic.Implementation
             var ratio = (100 - sumPlusMinus) / 100;
             var result = Math.Round(ratio * sumPts);
             string totalOverUnder = ratio < 1 ? "ТБ" : "ТМ";
+            var correction = Math.Abs(team1.PlusMinus) > Math.Abs(team2.PlusMinus) ? team1.PlusMinus : team2.PlusMinus;
+            correction = Math.Round(correction);
 
             dynamic summary = new JObject();
             summary.Team1 = new JObject();
@@ -38,6 +40,8 @@ namespace CalcLib.BusinessLogic.Implementation
             sb.AppendLine($"Понижающий кф.: {ratio}");
             //sb.AppendLine(string.Empty);
             sb.AppendLine($"Прогноз: {string.Concat(totalOverUnder, " ", result.ToString())}");
+            sb.AppendLine($"Корректирующий отступ: {correction}");
+            sb.AppendLine($"Прогноз с учетом отступа: {string.Concat(totalOverUnder, " ", (result - correction).ToString())}");
 
             summary.Text = sb.ToString();
 

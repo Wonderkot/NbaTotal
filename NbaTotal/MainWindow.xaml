@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NbaTotal"
         mc:Ignorable="d"
-        Title="NBA Total" Height="450" Width="356">
+        Title="NBA Total" Height="350" Width="356">
     <TabControl x:Name="TabControl">
         <TabItem x:Name="CalcTab">
             <TabItem.Header>
@@ -15,26 +15,29 @@
             </TabItem.Header>
             <TabItem.Content>
                 <StackPanel>
-                    <Grid Height="384">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="25*"/>
-                            <RowDefinition Height="38*"/>
-                            <RowDefinition Height="251*"/>
-                            <RowDefinition Height="76*"/>
+                            <RowDefinition  />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <ComboBox Grid.Column="0" Grid.Row="0" Name="Team1Cb" Margin="0,3,0,3"/>
-                        <ComboBox Grid.Column="1" Grid.Row="0" Name="Team2Cb" Margin="0,3,0,3"/>
+                        <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" >
+                            <StackPanel>
+                                <ComboBox  Name="Team1Cb" Margin="0,3,0,3" />
+                                <ComboBox  Name="Team2Cb" Margin="0,3,0,3"/>
+                                <Button Content="Расчет" Name="CalcBtn" Click="CalcBtn_OnClick" Margin="0,0,0,3"/>
+                            </StackPanel>
 
-                        <Button Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Расчет" Name="CalcBtn" Click="CalcBtn_OnClick" Margin="0,0,0,3"/>
+                        </GroupBox>
 
-                        <Grid Grid.Column="0" Grid.Row="2" Name="Summary" Grid.ColumnSpan="2">
+                        <Grid Grid.Column="0" Grid.Row="1" Name="Summary" Grid.ColumnSpan="2">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="28*" />
-                                <RowDefinition Height="223*" />
+                                <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions >
                                 <ColumnDefinition />
@@ -46,7 +49,7 @@
                             <TextBlock Name="Team1Summary" Grid.Column="0" Grid.Row="1" />
                             <TextBlock Name="Team2Summary" Grid.Column="1" Grid.Row="1"/>
                         </Grid>
-                        <TextBlock Grid.Column="0" Grid.Row="3" Name="Result" Grid.ColumnSpan="2" Background="#FFDDDDDD" Margin="0,3,0,0"/>
+                        <TextBlock Grid.Column="0" Grid.Row="2" Name="Result" Grid.ColumnSpan="2" Background="#FFDDDDDD" Margin="0,3,0,0"/>
                     </Grid>
                 </StackPanel>
             </TabItem.Content>
