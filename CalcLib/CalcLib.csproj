@@ -52,6 +52,7 @@
     <Compile Include="BusinessLogic\Interfaces\ISettingsReader.cs" />
     <Compile Include="Data\Settings.cs" />
     <Compile Include="Data\Team.cs" />
+    <Compile Include="Data\TeamConsts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

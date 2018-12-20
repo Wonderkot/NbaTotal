@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NbaTotal"
         mc:Ignorable="d"
-        Title="NBA Total" Height="450" Width="800">
+        Title="NBA Total" Height="450" Width="356">
     <TabControl x:Name="TabControl">
         <TabItem x:Name="CalcTab">
             <TabItem.Header>
@@ -17,31 +17,36 @@
                 <StackPanel>
                     <Grid Height="384">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="5*"/>
-                            <RowDefinition Height="10*"/>
-                            <RowDefinition Height="85*"/>
+                            <RowDefinition Height="25*"/>
+                            <RowDefinition Height="38*"/>
+                            <RowDefinition Height="251*"/>
+                            <RowDefinition Height="76*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <ComboBox Grid.Column="0" Grid.Row="0" Name="Team1Cb"/>
-                        <ComboBox Grid.Column="1" Grid.Row="0" Name="Team2Cb"/>
-                        <Button Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Рассчет" Name="CalcBtn" Click="CalcBtn_OnClick"/>
-                        
-                        <Grid Grid.Column="0" Grid.Row="2" Name="Summary">
+                        <ComboBox Grid.Column="0" Grid.Row="0" Name="Team1Cb" Margin="0,3,0,3"/>
+                        <ComboBox Grid.Column="1" Grid.Row="0" Name="Team2Cb" Margin="0,3,0,3"/>
+
+                        <Button Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Content="Расчет" Name="CalcBtn" Click="CalcBtn_OnClick" Margin="0,0,0,3"/>
+
+                        <Grid Grid.Column="0" Grid.Row="2" Name="Summary" Grid.ColumnSpan="2">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="30*"/>
-                                <RowDefinition Height="106*"/>
+                                <RowDefinition Height="28*" />
+                                <RowDefinition Height="223*" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions >
                                 <ColumnDefinition />
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Name="Team1Summary" Grid.Column="0" Grid.Row="0"/>
-                            <TextBlock Name="Team2Summary" Grid.Column="1" Grid.Row="0"/>
+                            <TextBlock Name="Team1Name" Grid.Column="0" Grid.Row="0"/>
+                            <TextBlock Name="Team2Name" Grid.Column="1" Grid.Row="0"/>
+
+                            <TextBlock Name="Team1Summary" Grid.Column="0" Grid.Row="1" />
+                            <TextBlock Name="Team2Summary" Grid.Column="1" Grid.Row="1"/>
                         </Grid>
-                        <TextBlock Grid.Column="1" Grid.Row="2" Name="Result"/>
+                        <TextBlock Grid.Column="0" Grid.Row="3" Name="Result" Grid.ColumnSpan="2" Background="#FFDDDDDD" Margin="0,3,0,0"/>
                     </Grid>
                 </StackPanel>
             </TabItem.Content>
