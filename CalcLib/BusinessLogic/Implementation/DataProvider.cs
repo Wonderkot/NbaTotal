@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Net.Http;
+using System.Threading.Tasks;
 using CalcLib.BusinessLogic.Interfaces;
 using CalcLib.Data;
 using Newtonsoft.Json.Linq;
@@ -28,7 +27,7 @@ namespace CalcLib.BusinessLogic.Implementation
 
             try
             {
-                var json = JObject.Parse(responsetext);
+                var json = JObject.Parse(responsetext.Result);
                 var resultSets = json["resultSets"];
                 var rowSet = resultSets[0]["rowSet"] as JArray;
                 var teams = new Dictionary<long, string>();
@@ -55,34 +54,40 @@ namespace CalcLib.BusinessLogic.Implementation
             return new Dictionary<long, string>();
         }
 
-        private string GetResponseText(string url)
+        private Task<string> GetResponseText(string url)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Accept = "application/json";
             request.Method = "GET";
             request.Headers.Add("Accept-Encoding", ": gzip, deflate, br");
-            //request.KeepAlive = true;
             request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0";
             request.Referer = "http://stats.nba.com/scores/";
 
-            string responseText;
             try
             {
-                var response = request.GetResponse() as HttpWebResponse;
-                using (var responsechar = new StreamReader(response.GetResponseStream()))
-                {
-                    responseText = responsechar.ReadToEnd();
-                    Debug.Write(responseText);
-                }
+                Task<WebResponse> task = Task.Factory.FromAsync(
+                   request.BeginGetResponse,
+                   asyncResult => request.EndGetResponse(asyncResult),
+                   null);
 
-                response.Close();
+                return task.ContinueWith(t => ReadStreamFromResponse(t.Result));
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
-            return responseText;
+        }
+
+        private static string ReadStreamFromResponse(WebResponse response)
+        {
+            using (Stream responseStream = response.GetResponseStream())
+            using (StreamReader sr = new StreamReader(responseStream))
+            {
+                //Need to return this response 
+                string strContent = sr.ReadToEnd();
+                return strContent;
+            }
         }
 
         public Team GetTeam(long id)
@@ -93,7 +98,7 @@ namespace CalcLib.BusinessLogic.Implementation
             {
                 var url = string.Format(_settings.TeamUrl, id);
                 var response = GetResponseText(url);
-                var json = JObject.Parse(response);
+                var json = JObject.Parse(response.Result);
                 var resultSets = json["resultSets"];
                 var rowSet = resultSets[0]["rowSet"] as JArray;
                 if (rowSet != null)

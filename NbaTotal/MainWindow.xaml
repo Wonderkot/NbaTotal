@@ -10,7 +10,7 @@
         <TabItem x:Name="CalcTab">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="3">Расчет</TextBlock>
+                    <TextBlock Margin="3">Расчет NBA</TextBlock>
                 </StackPanel>
             </TabItem.Header>
             <TabItem.Content>
@@ -54,7 +54,7 @@
                 </StackPanel>
             </TabItem.Content>
         </TabItem>
-        <TabItem x:Name="SettingsTab">
+        <TabItem x:Name="SettingsTab" Visibility="Hidden">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="3">Настройки</TextBlock>

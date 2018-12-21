@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using CalcLib.BusinessLogic.Implementation;
@@ -13,34 +14,50 @@ namespace NbaTotal
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        readonly IDataProvider _dataProvider = new DataProvider();
         readonly ICalc _calc = new Calc();
         public MainWindow()
         {
             InitializeComponent();
-            //Dictionary<long, string> teams = _dataProvider.GetAllTeams();
             SetTeamsNames(Team1Cb, TeamConsts.FullNames);
             SetTeamsNames(Team2Cb, TeamConsts.FullNames);
         }
 
         private void CalcBtn_OnClick(object sender, RoutedEventArgs e)
         {
+            if (Team1Cb.SelectedValue == null || Team2Cb.SelectedValue == null)
+            {
+                MessageBox.Show("Значения для расчета не выбраны!");
+                return;
+            }
             long id1 = (long)Team1Cb.SelectedValue;
             long id2 = (long)Team2Cb.SelectedValue;
-
-            var result = _calc.GetResult(id1, id2);
-
-            Result.Text = result.Text;
-
+            CalcBtn.IsEnabled = false;
             Team1Name.Text = Team1Cb.Text;
             Team2Name.Text = Team2Cb.Text;
+            Thread test = new Thread(() =>
+            {
+                SetResult(id1, id2);
+            });
+            test.Start();
+        }
 
-            
+        private void SetResult(long team1, long team2)
+        {
+            var result = _calc.GetResult(team1, team2);
+
+            Result.Dispatcher.Invoke(() =>
+            {
+                Result.Text = result.Text;
+            });
+
             SetSummary(result.Team1, Team1Summary);
             SetSummary(result.Team2, Team2Summary);
-
+            CalcBtn.Dispatcher.Invoke(() =>
+            {
+                CalcBtn.IsEnabled = true;
+            });
         }
 
         private void SetTeamsNames(ComboBox comboBox, Dictionary<long, string> teams)
@@ -56,7 +73,10 @@ namespace NbaTotal
             sb.AppendLine($"Забитые мячи: {teamData["Pts"]}");
             sb.AppendLine(string.Empty);
             sb.AppendLine($"Разность мячей : {teamData["PlusMinus"]}");
-            textBlock.Text = sb.ToString();
+            textBlock.Dispatcher.Invoke(() =>
+            {
+                textBlock.Text = sb.ToString();
+            });
         }
     }
 }
