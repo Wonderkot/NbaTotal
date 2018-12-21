@@ -11,7 +11,7 @@ namespace CalcLib.BusinessLogic.Implementation
 
         public Calc()
         {
-            _dataProvider = new DataProvider();
+            _dataProvider = new NbaDataProvider();
         }
         public dynamic GetResultByTeam(long id1, long id2)
         {

@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\Implementation\Calc.cs" />
-    <Compile Include="BusinessLogic\Implementation\DataProvider.cs" />
+    <Compile Include="BusinessLogic\Implementation\NbaDataProvider.cs" />
     <Compile Include="BusinessLogic\Implementation\SettingsReader.cs" />
     <Compile Include="BusinessLogic\Interfaces\ICalc.cs" />
     <Compile Include="BusinessLogic\Interfaces\IDataProvider.cs" />

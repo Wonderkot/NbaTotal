@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NbaTotal"
         mc:Ignorable="d"
-        Title="NBA Total" Height="350" Width="356">
+        Title="Basket Total" Height="350" Width="356">
     <TabControl x:Name="TabControl">
         <TabItem x:Name="CalcTab">
             <TabItem.Header>
@@ -51,6 +51,46 @@
                         </Grid>
                         <TextBlock Grid.Column="0" Grid.Row="2" Name="Result" Grid.ColumnSpan="2" Background="#FFDDDDDD" Margin="0,3,0,0"/>
                     </Grid>
+                </StackPanel>
+            </TabItem.Content>
+        </TabItem>
+        <TabItem x:Name="ManualCalc">
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="3">Ручной расчет</TextBlock>
+                </StackPanel>
+            </TabItem.Header>
+            <TabItem.Content>
+                <StackPanel>
+                    <GroupBox>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Grid.Row="0" Padding="3,3,0,0" TextAlignment="Right">Мячи 1</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="0" Margin="3,3,3,3" />
+
+                            <TextBlock Grid.Column="2" Grid.Row="0" Padding="3,3,0,0" TextAlignment="Right">Мячи 2</TextBlock>
+                            <TextBox Grid.Column="3" Grid.Row="0" Margin="3,3,3,3"/>
+
+                            <TextBlock Grid.Column="0" Grid.Row="1" Padding="3,3,0,0">Разность 1</TextBlock>
+                            <TextBox Grid.Column="1" Grid.Row="1" Margin="3,3,3,3"/>
+
+                            <TextBlock Grid.Column="2" Grid.Row="1" Padding="3,3,0,0">Разность 2</TextBlock>
+                            <TextBox Grid.Column="3" Grid.Row="1" Margin="3,3,3,3"/>
+
+                            <Button Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Margin="0,3,0,3" Name="ManualCalcBtn" Click="ManualCalcBtn_Click">Расчет</Button>
+                        </Grid>
+                    </GroupBox>
                 </StackPanel>
             </TabItem.Content>
         </TabItem>

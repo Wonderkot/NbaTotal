@@ -93,5 +93,10 @@ namespace NbaTotal
                 textBlock.Text = sb.ToString();
             });
         }
+
+        private void ManualCalcBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

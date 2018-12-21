@@ -9,10 +9,10 @@ using Newtonsoft.Json.Linq;
 
 namespace CalcLib.BusinessLogic.Implementation
 {
-    public class DataProvider : IDataProvider
+    public class NbaDataProvider : IDataProvider
     {
         private readonly Settings _settings;
-        public DataProvider()
+        public NbaDataProvider()
         {
             ISettingsReader settingsReader = new SettingsReader();
             _settings = settingsReader.GetSettings();
