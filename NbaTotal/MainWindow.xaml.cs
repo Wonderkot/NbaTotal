@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -17,11 +18,20 @@ namespace NbaTotal
     public partial class MainWindow
     {
         readonly ICalc _calc = new Calc();
+
         public MainWindow()
         {
             InitializeComponent();
             SetTeamsNames(Team1Cb, TeamConsts.FullNames);
             SetTeamsNames(Team2Cb, TeamConsts.FullNames);
+            _calc.ShowMessage += CalcOnShowMessage;
+            _calc.SetShowMessage();
+        }
+
+        private void CalcOnShowMessage(string s)
+        {
+            //TODO пока так, потом может лог в отдельную вкладку сделаю
+            MessageBox.Show(s);
         }
 
         private void CalcBtn_OnClick(object sender, RoutedEventArgs e)
@@ -45,7 +55,12 @@ namespace NbaTotal
 
         private void SetResult(long team1, long team2)
         {
-            var result = _calc.GetResult(team1, team2);
+            var result = _calc.GetResultByTeam(team1, team2);
+            if (result == null)
+            {
+                MessageBox.Show("Расчет невозможен, данные не получены!");
+                return;
+            }
 
             Result.Dispatcher.Invoke(() =>
             {

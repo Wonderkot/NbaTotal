@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CalcLib.Data;
 
 namespace CalcLib.BusinessLogic.Interfaces
@@ -7,6 +8,6 @@ namespace CalcLib.BusinessLogic.Interfaces
     {
         Dictionary<long, string> GetAllTeams();
         Team GetTeam(long id);
-
+        event Action<string> ShowMessage;
     }
 }

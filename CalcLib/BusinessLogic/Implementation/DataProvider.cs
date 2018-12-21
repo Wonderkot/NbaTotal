@@ -54,7 +54,7 @@ namespace CalcLib.BusinessLogic.Implementation
             return new Dictionary<long, string>();
         }
 
-        private Task<string> GetResponseText(string url)
+        private async Task<string> GetResponseText(string url)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Accept = "application/json";
@@ -70,13 +70,13 @@ namespace CalcLib.BusinessLogic.Implementation
                    asyncResult => request.EndGetResponse(asyncResult),
                    null);
 
-                return task.ContinueWith(t => ReadStreamFromResponse(t.Result));
+                return await task.ContinueWith(t => ReadStreamFromResponse(t.Result));
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                ShowMessage?.Invoke(e.Message);
             }
+            return string.Empty;
         }
 
         private static string ReadStreamFromResponse(WebResponse response)
@@ -98,6 +98,11 @@ namespace CalcLib.BusinessLogic.Implementation
             {
                 var url = string.Format(_settings.TeamUrl, id);
                 var response = GetResponseText(url);
+                if (string.IsNullOrEmpty(response.Result))
+                {
+                    ShowMessage?.Invoke($"Не удалось получить данные по идентификатору {id}");
+                    return null;
+                }
                 var json = JObject.Parse(response.Result);
                 var resultSets = json["resultSets"];
                 var rowSet = resultSets[0]["rowSet"] as JArray;
@@ -117,9 +122,11 @@ namespace CalcLib.BusinessLogic.Implementation
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                ShowMessage?.Invoke(e.Message);
             }
-            return new Team();
+            return null;
         }
+
+        public event Action<string> ShowMessage;
     }
 }

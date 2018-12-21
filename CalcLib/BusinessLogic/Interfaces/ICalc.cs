@@ -1,7 +1,11 @@
-﻿namespace CalcLib.BusinessLogic.Interfaces
+﻿using System;
+
+namespace CalcLib.BusinessLogic.Interfaces
 {
     public interface ICalc
     {
-        dynamic GetResult(long id1, long id2);
+        dynamic GetResultByTeam(long id1, long id2);
+        event Action<string> ShowMessage;
+        void SetShowMessage();
     }
 }

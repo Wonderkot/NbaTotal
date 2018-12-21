@@ -7,11 +7,21 @@ namespace CalcLib.BusinessLogic.Implementation
 {
     public class Calc : ICalc
     {
-        readonly IDataProvider _dataProvider = new DataProvider();
-        public dynamic GetResult(long id1, long id2)
+        readonly IDataProvider _dataProvider;
+
+        public Calc()
+        {
+            _dataProvider = new DataProvider();
+        }
+        public dynamic GetResultByTeam(long id1, long id2)
         {
             var team1 = _dataProvider.GetTeam(id1);
             var team2 = _dataProvider.GetTeam(id2);
+
+            if (team1 == null || team2 == null)
+            {
+                return null;
+            }
 
             var sumPts = team1.Pts + team2.Pts;
             var sumPlusMinus = team1.PlusMinus + team2.PlusMinus;
@@ -40,9 +50,7 @@ namespace CalcLib.BusinessLogic.Implementation
 
             var sb = new StringBuilder();
             sb.AppendLine($"Сумма мячей: {sumPts}");
-            //sb.AppendLine(string.Empty);
             sb.AppendLine($"Понижающий кф.: {ratio}");
-            //sb.AppendLine(string.Empty);
             sb.AppendLine($"Прогноз: {string.Concat(totalOverUnder, " ", result.ToString())}");
             sb.AppendLine($"Корректирующий отступ: {correction}");
             sb.AppendLine($"Прогноз с учетом отступа: {string.Concat(totalOverUnder, " ", (result - correction).ToString())}");
@@ -50,6 +58,12 @@ namespace CalcLib.BusinessLogic.Implementation
             summary.Text = sb.ToString();
 
             return summary;
+        }
+
+        public event Action<string> ShowMessage;
+        public void SetShowMessage()
+        {
+            _dataProvider.ShowMessage += ShowMessage;
         }
     }
 }
